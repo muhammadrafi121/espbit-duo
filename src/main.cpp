@@ -2,11 +2,7 @@
 #include <string>
 #include "display.h"
 #include "inputs.h"
-
-// Check to show menu page
-bool isMainMenu;
-bool is1PMenu;
-bool is2PMenu;
+#include "menu.h"
 
 // Check to play, pause & restart game
 bool isPlayGame;
@@ -16,24 +12,50 @@ bool isGameOver;
 // Timer variables
 unsigned long previousMillis = 0;  // Stores the last time the display was updated
 const long interval = 20;  // Interval to update the display (in milliseconds)
+const long menuInterval = 200;  // Interval to update the menu display (in milliseconds)
 
 void setup() {
     initDisplay();
-    initInputs();  
+    initInputs();
+	initMenu();
 }
 
 void loop() {
 	unsigned long currentMillis = millis();
-	
-	if (currentMillis - previousMillis >= interval) {
-		previousMillis = currentMillis;
 
-		clearDisplay();
+	if (isMainMenu) {
+		if (currentMillis - previousMillis >= menuInterval) {
+			previousMillis = currentMillis;
+			clearDisplay();
 
-		renderText(10, 10, "Hello ESPBit Duo");
+			showMainMenu();
 
-		JoystickPos pos1 = getJoystickPosition(HORZ_PIN_1, VERT_PIN_1);
-		std::string x1 = std::to_string(pos1.x);
-		renderText(20, 20, x1.c_str());
+			JoystickPos pos1 = getJoystickPosition(HORZ_PIN_1, VERT_PIN_1);
+
+			updateMainMenu(pos1.y);
+		}
+
+		if (isBtnPressed(SW_BTN_2)) {
+			selectMode();
+		}
+	} else if (is1PMenu) {
+		if (currentMillis - previousMillis >= menuInterval) {
+			previousMillis = currentMillis;
+			clearDisplay();
+
+			show1PMenu();
+		}
+	} else if (is2PMenu) {
+		if (currentMillis - previousMillis >= menuInterval) {
+			previousMillis = currentMillis;
+			clearDisplay();
+
+			show2PMenu();
+		}
+	}
+
+	bool isBackBtnPressed = isBtnPressed(BTN_1);
+	if (isBackBtnPressed) {
+		backToMenu();
 	}
 }

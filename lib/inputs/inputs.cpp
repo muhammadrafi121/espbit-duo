@@ -21,8 +21,8 @@ bool isBtnPressed(int pin) {
 
 JoystickPos getJoystickPosition(int pinX, int pinY) {
     JoystickPos pos;
-    pos.x = analogRead(pinX);
-    pos.y = analogRead(pinY);
+    pos.x = map(analogRead(pinX), 0, 4095, -1, 1);
+    pos.y = map(analogRead(pinY), 0, 4095, -1, 1);
 
     return pos;
 }

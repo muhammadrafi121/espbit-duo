@@ -14,7 +14,7 @@ void clearDisplay() {
 
 void renderText(int x, int y, const char* text) {
     display.drawString(x, y, text);
-    display.display();
+    // display.display();
 }
 
 void renderCircle(int x, int y, int r, bool filled) {
@@ -24,7 +24,7 @@ void renderCircle(int x, int y, int r, bool filled) {
         display.drawCircle(x, y, r);
     }
     
-    display.display();
+    // display.display();
 }
 
 void renderRect(int x, int y, int w, int h, bool filled) {
@@ -34,15 +34,27 @@ void renderRect(int x, int y, int w, int h, bool filled) {
         display.drawRect(x, y, w, h);
     }
 
-    display.display();
+    // display.display();
+}
+
+void renderTriangle(int x0, int y0, int x1, int y1, int x2, int y2, bool filled) {
+    if (filled) {
+        display.fillTriangle(x0, y0, x1, y1, x2, y2);
+    } else {
+        display.drawTriangle(x0, y0, x1, y1, x2, y2);
+    }
 }
 
 void renderLine(int x0, int y0, int x1, int y1) {
     display.drawLine(x0, y0, x1, y1);
-    display.display();
+    // display.display();
 }
 
 void renderPixel(int x, int y) {
     display.setPixel(x, y);
+    // display.display();
+}
+
+void renderDisplay() {
     display.display();
 }
