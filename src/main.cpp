@@ -4,11 +4,6 @@
 #include "inputs.h"
 #include "menu.h"
 
-// Check to play, pause & restart game
-bool isPlayGame;
-bool isGamePaused;
-bool isGameOver;
-
 // Timer variables
 unsigned long previousMillis = 0;  // Stores the last time the display was updated
 const long interval = 20;  // Interval to update the display (in milliseconds)
@@ -38,19 +33,20 @@ void loop() {
 		if (isBtnPressed(SW_BTN_2)) {
 			selectMode();
 		}
-	} else if (is1PMenu) {
+	} else if (is1PMenu || is2PMenu) {
 		if (currentMillis - previousMillis >= menuInterval) {
 			previousMillis = currentMillis;
 			clearDisplay();
 
-			show1PMenu();
-		}
-	} else if (is2PMenu) {
-		if (currentMillis - previousMillis >= menuInterval) {
-			previousMillis = currentMillis;
-			clearDisplay();
+			if (is1PMenu) {
+				show1PMenu();
+			} else {
+				show2PMenu();
+			}
 
-			show2PMenu();
+			JoystickPos pos1 = getJoystickPosition(HORZ_PIN_1, VERT_PIN_1);
+
+			updateGameMenu(pos1.y);
 		}
 	}
 
